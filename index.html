@@ -38,7 +38,8 @@
     }
 
     img,
-    video {
+    video,
+    iframe {
       display: block;
       max-width: 100%;
     }
@@ -350,16 +351,51 @@
     }
 
     .media-card img,
-    .media-card video {
+    .media-card video,
+    .media-card iframe {
       width: 100%;
       aspect-ratio: 16 / 10;
       object-fit: cover;
       background: #d9ddd5;
+      border: 0;
     }
 
     .media-card.wide img,
-    .media-card.wide video {
+    .media-card.wide video,
+    .media-card.wide iframe {
       aspect-ratio: 16 / 9;
+    }
+
+    .youtube-link {
+      position: relative;
+      display: block;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      overflow: hidden;
+      background: #111;
+    }
+
+    .youtube-link img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.86;
+    }
+
+    .youtube-play {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      display: grid;
+      place-items: center;
+      width: 74px;
+      height: 52px;
+      border-radius: 8px;
+      background: #d92323;
+      color: #fff;
+      font-size: 24px;
+      font-weight: 850;
+      transform: translate(-50%, -50%);
     }
 
     .media-card.tall img {
@@ -631,6 +667,42 @@
 
     tr:last-child td {
       border-bottom: 0;
+    }
+
+    .table-scroll {
+      overflow-x: auto;
+      border: 1px solid var(--line);
+      background: #fff;
+    }
+
+    .table-scroll table {
+      min-width: 1180px;
+      border: 0;
+    }
+
+    .benchmark-table th,
+    .benchmark-table td {
+      text-align: center;
+      white-space: nowrap;
+    }
+
+    .benchmark-table th:first-child,
+    .benchmark-table td:first-child {
+      text-align: left;
+    }
+
+    .benchmark-table .method-citation {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .benchmark-table .checkmark {
+      font-size: 18px;
+      font-weight: 850;
+    }
+
+    .benchmark-table .group-start td {
+      border-top: 2px solid var(--line);
     }
 
     .benchmark-grid {
@@ -1024,7 +1096,7 @@
           </div>
           <div class="metric blue">
             <strong>982,042</strong>
-            <span>Vicon-derived 2D keypoints</span>
+            <span>Vicon-derived 2D and 3D keypoints with residual limb end and prosthesis-aware keypoints </span>
           </div>
           <div class="metric amber">
             <strong>8</strong>
@@ -1057,7 +1129,7 @@
               We provide a compact LD-Motion data example package for direct inspection. It includes synchronized raw RGB videos, frame-level annotation files, Vicon-derived 2D keypoints with skeleton-overlay video demonstrations, Vicon-derived 3D keypoint annotations, and Vicon-constrained mesh annotations exported as OBJ files, together with rendered image examples for quick visual checks.
             </p>
             <div class="reviewer-actions">
-              <a class="button primary download-button" href="assets/LDMotion_Example.zip" download>Download Reviewer Examples</a>
+              <a class="button primary download-button" href="https://drive.google.com/file/d/1bUdohASn1xDJOa_14ZihRycu3PcvRagv/view?usp=drive_link" target="_blank" rel="noopener">Download Reviewer Examples</a>
               <span>ZIP package, 974 MB</span>
             </div>
           </div>
@@ -1325,9 +1397,10 @@
 
 
           <figure class="media-card wide">
-            <video controls muted playsinline preload="metadata">
-              <source src="assets/ldmotion/02_Lunges_openpose25_overlay_face_mosaic_rot180_grid4x2.mp4" type="video/mp4">
-            </video>
+            <a class="youtube-link" href="https://youtu.be/7504Ta2tkAE" target="_blank" rel="noopener" aria-label="Watch Vicon-derived keypoints and prosthesis-aware 2d annotation on YouTube">
+              <img src="https://img.youtube.com/vi/7504Ta2tkAE/hqdefault.jpg" alt="Vicon-derived keypoints and prosthesis-aware 2d annotation YouTube preview">
+              <span class="youtube-play" aria-hidden="true">▶</span>
+            </a>
             <figcaption>Vicon-derived keypoints and prosthesis-aware 2d annotation</figcaption>
           </figure>
 
@@ -1435,129 +1508,253 @@
       </div>
     </section>
 
-    <!-- <section class="section" id="benchmarks" aria-labelledby="benchmarks-title">
+    <section class="section" id="benchmarks" aria-labelledby="benchmarks-title">
       <div class="wrap">
         <div class="section-head">
           <div>
             <p class="kicker">Benchmark tasks</p>
-            <h2 id="benchmarks-title">Separated reporting for 2D pose, 3D pose, and mesh recovery</h2>
+            <h2 id="benchmarks-title">Benchmark for 2D pose, 3D pose, and mesh recovery</h2>
           </div>
-          <p>
+          <!-- <p>
             The paper avoids a single aggregate score because standard pose, residual endpoints, prosthesis-supported keypoints, and fitted mesh consistency fail in different ways.
-          </p>
+          </p> -->
         </div>
 
         <div class="benchmark-grid">
           <div>
-            <table aria-label="2D pose benchmark summary">
-              <thead>
-                <tr>
-                  <th>2D model</th>
-                  <th>LDPose-Prosthesis AP</th>
-                  <th>LD-Motion AP</th>
-                  <th>Fine-tuned LD-Motion AP</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>YOLOPose-l</td>
-                  <td>58.4</td>
-                  <td>45.7</td>
-                  <td>32.7</td>
-                </tr>
-                <tr>
-                  <td>RTMPose-l</td>
-                  <td>63.3</td>
-                  <td>69.1</td>
-                  <td>72.6</td>
-                </tr>
-                <tr>
-                  <td>ViTPose-l</td>
-                  <td>65.0</td>
-                  <td>71.8</td>
-                  <td>81.9</td>
-                </tr>
-              </tbody>
-            </table>
-            <p class="table-note">COCO-style AP over the LDPose 25-keypoint schema. The paper reports LDPose-Prosthesis and LD-Motion side by side for transfer analysis, not as a direct difficulty comparison.</p>
+            <div class="table-scroll">
+              <table class="benchmark-table" aria-label="2D pose benchmark summary">
+                <thead>
+                  <tr>
+                    <th rowspan="2">Method</th>
+                    <th rowspan="2">Fine-<br>tuning</th>
+                    <th colspan="6">LDPose-Prosthesis</th>
+                    <th colspan="6">LD-Motion</th>
+                  </tr>
+                  <tr>
+                    <th>AP</th>
+                    <th>AP<sup>50</sup></th>
+                    <th>AP<sup>75</sup></th>
+                    <th>AR</th>
+                    <th>AR<sup>50</sup></th>
+                    <th>AR<sup>75</sup></th>
+                    <th>AP</th>
+                    <th>AP<sup>50</sup></th>
+                    <th>AP<sup>75</sup></th>
+                    <th>AR</th>
+                    <th>AR<sup>50</sup></th>
+                    <th>AR<sup>75</sup></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="group-start">
+                    <td>YOLOPose-l</td>
+                    <td></td>
+                    <td>58.4</td>
+                    <td>84.4</td>
+                    <td>67.7</td>
+                    <td>64.2</td>
+                    <td>87.9</td>
+                    <td>72.5</td>
+                    <td>45.7</td>
+                    <td>73.5</td>
+                    <td>50.8</td>
+                    <td>51.8</td>
+                    <td>82.9</td>
+                    <td>56.8</td>
+                  </tr>
+                  <tr>
+                    <td><span class="method-citation">Maji et al. 2022</span></td>
+                    <td class="checkmark">&#10003;</td>
+                    <td>62.8</td>
+                    <td>82.3</td>
+                    <td>68.6</td>
+                    <td>65.8</td>
+                    <td>84.8</td>
+                    <td>71.2</td>
+                    <td>32.7</td>
+                    <td>46.2</td>
+                    <td>35.6</td>
+                    <td>35.4</td>
+                    <td>49.2</td>
+                    <td>38.0</td>
+                  </tr>
+                  <tr class="group-start">
+                    <td>RTMPose-l</td>
+                    <td></td>
+                    <td>63.3</td>
+                    <td>87.9</td>
+                    <td>74.1</td>
+                    <td>67.3</td>
+                    <td>88.3</td>
+                    <td>76.4</td>
+                    <td>69.1</td>
+                    <td>97.8</td>
+                    <td>82.6</td>
+                    <td>72.8</td>
+                    <td>98.6</td>
+                    <td>86.2</td>
+                  </tr>
+                  <tr>
+                    <td><span class="method-citation">Jiang et al. 2023</span></td>
+                    <td class="checkmark">&#10003;</td>
+                    <td>77.4</td>
+                    <td>89.9</td>
+                    <td>84.4</td>
+                    <td>79.7</td>
+                    <td>90.3</td>
+                    <td>85.0</td>
+                    <td>72.6</td>
+                    <td>96.9</td>
+                    <td>81.3</td>
+                    <td>77.6</td>
+                    <td>97.6</td>
+                    <td>84.2</td>
+                  </tr>
+                  <tr class="group-start">
+                    <td>ViTPose-l</td>
+                    <td></td>
+                    <td>65.0</td>
+                    <td>88.9</td>
+                    <td>76.0</td>
+                    <td>69.2</td>
+                    <td>89.0</td>
+                    <td>78.7</td>
+                    <td>71.8</td>
+                    <td>98.8</td>
+                    <td>87.1</td>
+                    <td>75.5</td>
+                    <td>99.0</td>
+                    <td>90.2</td>
+                  </tr>
+                  <tr>
+                    <td><span class="method-citation">Xu et al. 2022</span></td>
+                    <td class="checkmark">&#10003;</td>
+                    <td><strong>80.5</strong></td>
+                    <td><strong>90.8</strong></td>
+                    <td><strong>86.4</strong></td>
+                    <td><strong>82.9</strong></td>
+                    <td><strong>91.0</strong></td>
+                    <td><strong>88.0</strong></td>
+                    <td><strong>81.9</strong></td>
+                    <td><strong>99.0</strong></td>
+                    <td><strong>91.4</strong></td>
+                    <td><strong>85.9</strong></td>
+                    <td><strong>99.4</strong></td>
+                    <td><strong>93.4</strong></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <p class="table-note">2D keypoint estimation on LDPose-Prosthesis and LD-Motion. COCO-style AP/AR is reported over the LDPose 25-keypoint schema; methods marked with &#10003; are fine-tuned on LDPose-Prosthesis.</p>
           </div>
 
           <div>
-            <table aria-label="3D pose benchmark summary">
+            <table class="benchmark-table" aria-label="3D pose benchmark summary">
               <thead>
                 <tr>
-                  <th>3D model source</th>
-                  <th>Standard MPJPE ↓</th>
-                  <th>PA-MPJPE ↓</th>
-                  <th>Residual endpoint MPJPE ↓</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>YOLOPose-l</td>
-                  <td>209.28</td>
-                  <td>96.96</td>
-                  <td>375.94 with fine-tuning</td>
-                </tr>
-                <tr>
-                  <td>RTMPose-l</td>
-                  <td>47.89</td>
-                  <td>45.10</td>
-                  <td>110.0 with fine-tuning</td>
-                </tr>
-                <tr>
-                  <td>ViTPose-l</td>
-                  <td>46.07</td>
-                  <td>43.56</td>
-                  <td>90.12 with fine-tuning</td>
-                </tr>
-              </tbody>
-            </table>
-            <p class="table-note">2D predictions are reconstructed in 3D using calibrated multi-view geometry. Non-fine-tuned models do not predict residual endpoints.</p>
-          </div>
-
-          <div>
-            <table aria-label="Mesh recovery benchmark summary">
-              <thead>
-                <tr>
-                  <th>Mesh method</th>
+                  <th>Method</th>
+                  <th>Fine-tuning</th>
                   <th>MPJPE ↓</th>
                   <th>PA-MPJPE ↓</th>
+                  <th>MPJPE-ResidualEnd ↓</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="group-start">
+                  <td>YOLOPose-l</td>
+                  <td></td>
+                  <td>209.28</td>
+                  <td>96.96</td>
+                  <td>-</td>
+                </tr>
+                <tr>
+                  <td><span class="method-citation">Maji et al. 2022</span></td>
+                  <td class="checkmark">&#10003;</td>
+                  <td>594.64</td>
+                  <td>130.72</td>
+                  <td>375.94</td>
+                </tr>
+                <tr class="group-start">
+                  <td>RTMPose-l</td>
+                  <td></td>
+                  <td>47.89</td>
+                  <td>45.10</td>
+                  <td>-</td>
+                </tr>
+                <tr>
+                  <td><span class="method-citation">Jiang et al. 2023</span></td>
+                  <td class="checkmark">&#10003;</td>
+                  <td>58.83</td>
+                  <td>53.35</td>
+                  <td>110.0</td>
+                </tr>
+                <tr class="group-start">
+                  <td>ViTPose-l</td>
+                  <td></td>
+                  <td><strong>46.07</strong></td>
+                  <td><strong>43.56</strong></td>
+                  <td>-</td>
+                </tr>
+                <tr>
+                  <td><span class="method-citation">Xu et al. 2022</span></td>
+                  <td class="checkmark">&#10003;</td>
+                  <td>50.25</td>
+                  <td>47.61</td>
+                  <td><strong>90.12</strong></td>
+                </tr>
+              </tbody>
+            </table>
+            <p class="table-note">Multi-view 3D keypoint estimation on LD-Motion. Models without fine-tuning do not predict residual-limb endpoints and are therefore not evaluated on MPJPE-ResidualEnd.</p>
+          </div>
+
+          <div>
+            <table class="benchmark-table" aria-label="Mesh recovery benchmark summary">
+              <thead>
+                <tr>
+                  <th>Method</th>
+                  <th>MPJPE ↓</th>
+                  <th>PA-MPJPE ↓</th>
+                  <th>MPJPE-ResidualEnd ↓</th>
                   <th>MVE ↓</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <td>TokenHMR</td>
+                  <td>TokenHMR [CVPR24] <span class="method-citation">Dwivedi et al. 2024</span></td>
                   <td>148.81</td>
                   <td>87.30</td>
+                  <td>-</td>
                   <td>177.81</td>
                 </tr>
                 <tr>
-                  <td>CameraHMR</td>
+                  <td>CameraHMR [3DV25] <span class="method-citation">Patel and Black 2025</span></td>
                   <td>229.97</td>
                   <td>120.71</td>
+                  <td>-</td>
                   <td>198.53</td>
                 </tr>
                 <tr>
-                  <td>PromptHMR</td>
+                  <td>PromptHMR [CVPR25] <span class="method-citation">Wang et al. 2025</span></td>
                   <td>148.09</td>
                   <td>87.25</td>
+                  <td>-</td>
                   <td>107.44</td>
                 </tr>
                 <tr>
-                  <td>ResiHMR</td>
-                  <td>135.32</td>
-                  <td>76.14</td>
-                  <td>101.47</td>
+                  <td>ResiHMR <span class="method-citation">Ying et al. 2026</span></td>
+                  <td><strong>135.32<sup>†</sup></strong></td>
+                  <td><strong>76.14<sup>†</sup></strong></td>
+                  <td><strong>154.22</strong></td>
+                  <td><strong>101.47<sup>†</sup></strong></td>
                 </tr>
               </tbody>
             </table>
-            <p class="table-note">Mesh recovery is evaluated against Vicon-constrained fitted mesh references; results are diagnostic and not clinical surface accuracy.</p>
+            <p class="table-note">3D human mesh recovery on LD-Motion. <sup>†</sup> indicates that ResiHMR is evaluated over anatomically present joints and post-amputation vertices. Fitted mesh references are used for benchmark diagnostics, not clinical surface-ground-truth evaluation.</p>
           </div>
         </div>
       </div>
-    </section> -->
+    </section>
 
     <!-- <section class="section dark" id="media" aria-labelledby="media-title">
       <div class="wrap">
